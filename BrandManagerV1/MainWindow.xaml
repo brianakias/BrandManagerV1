@@ -20,8 +20,8 @@
         <StackPanel Grid.Row="0" Grid.Column="0" >
             <Button x:Name="createBrandButton" Content="Create brand" HorizontalAlignment="Center" VerticalAlignment="Top" Click="Button_Click_CreateBrand" Width="80" Margin="5,5,5,10"/>
             <Button x:Name="readBrandButton" Content="Read brands" HorizontalAlignment="Center" VerticalAlignment="Top" Width="80" Margin="5,5,5,10" Click="Button_Click_ReadBrands"/>
-            <Button x:Name="updateBrandButton" Content="Update brand" HorizontalAlignment="Center" VerticalAlignment="Top" Width="80" Click="Button_Click_Update" Margin="5,5,5,10"/>
-            <Button x:Name="deleteButton" Content="Delete brand" HorizontalAlignment="Center" VerticalAlignment="Top" Width="80" Click="Button_Click_Delete" Margin="5,5,5,10"/>
+            <Button x:Name="updateBrandButton" Content="Update brand" HorizontalAlignment="Center" VerticalAlignment="Top" Width="80" Click="Button_Click_UpdateBrand" Margin="5,5,5,10"/>
+            <Button x:Name="deleteButton" Content="Delete brand" HorizontalAlignment="Center" VerticalAlignment="Top" Width="80" Click="Button_Click_DeleteBrand" Margin="5,5,5,10"/>
         </StackPanel>
 
         <Label x:Name="brandNameLabel" HorizontalAlignment="Left" Margin="21,47,0,0" VerticalAlignment="Top" Grid.Column="1" Grid.Row="0">

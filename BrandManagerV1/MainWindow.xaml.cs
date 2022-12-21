@@ -75,7 +75,7 @@ namespace BrandManagerV1
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Button_Click_Update(object sender, RoutedEventArgs e)
+        private void Button_Click_UpdateBrand(object sender, RoutedEventArgs e)
         {
             HideAll();
             EmptyAllFields();
@@ -95,7 +95,7 @@ namespace BrandManagerV1
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Button_Click_Delete(object sender, RoutedEventArgs e)
+        private void Button_Click_DeleteBrand(object sender, RoutedEventArgs e)
         {
             HideAll();
             EmptyAllFields();
