@@ -1,11 +1,14 @@
 ﻿using Npgsql;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Data;
+using System.Windows.Controls;
 
 namespace BrandManagerV1
 {
     public class BrandRepository : IDataAccess
     {
-        readonly string connectionString = "Server=localhost;Port=5432;Database=mydatabase;UserId=postgres;Password=L.a_#r_)asd;";
+        public static string connectionString = "Server=localhost;Port=5432;Database=mydatabase;UserId=postgres;Password=L.a_#r_)asd;";
 
         public void CreateRecord(string brandName, bool isEnabled)
         {
@@ -37,7 +40,7 @@ namespace BrandManagerV1
                 using (var command = new NpgsqlCommand())
                 {
                     command.Connection = connection;
-                    command.CommandText = "SELECT id, name, is_enabled FROM brands WHERE is_enabled = true";
+                    command.CommandText = "SELECT * FROM brands WHERE is_enabled = true";
 
                     using (var reader = command.ExecuteReader())
                     {
@@ -57,6 +60,27 @@ namespace BrandManagerV1
             return brands;
         }
 
+        public void ReadRecords2(DataGrid dataGrid)
+        {
+            //var brands = new List<Brand>();
+
+            using (NpgsqlConnection connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+                using (NpgsqlCommand command = new NpgsqlCommand("SELECT * FROM brands", connection))
+                {
+                    using (NpgsqlDataReader reader = command.ExecuteReader())
+                    {
+                        DataTable table = new DataTable();
+                        table.Load(reader);
+                        dataGrid.ItemsSource = table.DefaultView;
+                    }
+                }
+
+                connection.Close();
+            }
+        }
 
         public void UpdateRecord(int id, string brandName, bool isEnabled)
         {

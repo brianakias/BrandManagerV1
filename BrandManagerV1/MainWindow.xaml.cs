@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Npgsql;
+using System.Collections.Generic;
+using System.Data;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -37,13 +39,87 @@ namespace BrandManagerV1
             isEnabledBox.IsEnabled = true;
         }
 
+        private void Button_Click_ReadBrands(object sender, RoutedEventArgs e)
+        {
+            HideAll();
+            EmptyAllFields();
+            ToggleVisibility();
+            ResetBorderAllThicknesses();
+            readBrandButton.BorderThickness = new Thickness(3);
+            idTextBox.IsReadOnly = false;
+            idTextBox.Background = Brushes.White;
+            brandNameTextBox.IsReadOnly = false;
+            brandNameTextBox.Background = Brushes.White;
+            isEnabledBox.IsEnabled = true;
+
+
+            using (NpgsqlConnection connection = new NpgsqlConnection(BrandRepository.connectionString))
+            {
+                connection.Open();
+
+                using (NpgsqlCommand command = new NpgsqlCommand("SELECT * FROM brands", connection))
+                {
+                    using (NpgsqlDataReader reader = command.ExecuteReader())
+                    {
+                        DataTable table = new DataTable();
+                        table.Load(reader);
+                        dataGrid.ItemsSource = table.DefaultView;
+                    }
+                }
+            }
+
+        }
+
+        /// <summary>
+        /// Logic for when update brand button pressed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click_Update(object sender, RoutedEventArgs e)
+        {
+            HideAll();
+            EmptyAllFields();
+            ToggleVisibility();
+            ResetBorderAllThicknesses();
+            updateBrandButton.BorderThickness = new Thickness(3);
+            idTextBox.IsReadOnly = false;
+            idTextBox.Background = Brushes.White;
+            brandNameTextBox.IsReadOnly = false;
+            brandNameTextBox.Background = Brushes.White;
+            isEnabledBox.IsEnabled = true;
+        }
+
+
+        /// <summary>
+        /// Logic for when delete brand button pressed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click_Delete(object sender, RoutedEventArgs e)
+        {
+            HideAll();
+            EmptyAllFields();
+            ToggleVisibility();
+            ResetBorderAllThicknesses();
+            deleteButton.BorderThickness = new Thickness(3);
+            idTextBox.IsReadOnly = false;
+            idTextBox.Background = Brushes.White;
+            brandNameTextBox.IsReadOnly = true;
+            brandNameTextBox.Background = Brushes.LightGray;
+            isEnabledBox.IsEnabled = false;
+
+        }
+
+
+
+
         /// <summary>
         /// Resets the border thickness of the 4 CRUD buttons.
         /// </summary>
         private void ResetBorderAllThicknesses()
         {
             createBrandButton.BorderThickness = new Thickness(1);
-            // needs to update for read button
+            readBrandButton.BorderThickness = new Thickness(1);
             updateBrandButton.BorderThickness = new Thickness(1);
             deleteButton.BorderThickness = new Thickness(1);
         }
@@ -157,45 +233,6 @@ namespace BrandManagerV1
                 int id = int.Parse(idTextBox.Text);
                 brandRepository.DeleteRecord(id);
             }
-        }
-
-        /// <summary>
-        /// Logic for when update brand button pressed.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Button_Click_Update(object sender, RoutedEventArgs e)
-        {
-            HideAll();
-            EmptyAllFields();
-            ToggleVisibility();
-            ResetBorderAllThicknesses();
-            updateBrandButton.BorderThickness = new Thickness(3);
-            idTextBox.IsReadOnly = false;
-            idTextBox.Background = Brushes.White;
-            brandNameTextBox.IsReadOnly = false;
-            brandNameTextBox.Background = Brushes.White;
-            isEnabledBox.IsEnabled = true;
-        }
-
-        /// <summary>
-        /// Logic for when delete brand button pressed.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Button_Click_Delete(object sender, RoutedEventArgs e)
-        {
-            HideAll();
-            EmptyAllFields();
-            ToggleVisibility();
-            ResetBorderAllThicknesses();
-            deleteButton.BorderThickness = new Thickness(3);
-            idTextBox.IsReadOnly = false;
-            idTextBox.Background = Brushes.White;
-            brandNameTextBox.IsReadOnly = true;
-            brandNameTextBox.Background = Brushes.LightGray;
-            isEnabledBox.IsEnabled = false;
-
         }
     }
 }

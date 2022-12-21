@@ -14,13 +14,12 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="4*"/>
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Row="0" Grid.Column="0" >
             <Button x:Name="createBrandButton" Content="Create brand" HorizontalAlignment="Center" VerticalAlignment="Top" Click="Button_Click_CreateBrand" Width="80" Margin="5,5,5,10"/>
-            <Button x:Name="readBrandButton" Content="Read brands" HorizontalAlignment="Center" VerticalAlignment="Top" Width="80" Margin="5,5,5,10"/>
+            <Button x:Name="readBrandButton" Content="Read brands" HorizontalAlignment="Center" VerticalAlignment="Top" Width="80" Margin="5,5,5,10" Click="Button_Click_ReadBrands"/>
             <Button x:Name="updateBrandButton" Content="Update brand" HorizontalAlignment="Center" VerticalAlignment="Top" Width="80" Click="Button_Click_Update" Margin="5,5,5,10"/>
             <Button x:Name="deleteButton" Content="Delete brand" HorizontalAlignment="Center" VerticalAlignment="Top" Width="80" Click="Button_Click_Delete" Margin="5,5,5,10"/>
         </StackPanel>
@@ -41,5 +40,8 @@
         <Button x:Name="submitButton" Grid.Column="1" Content="Submit" HorizontalAlignment="Left" VerticalAlignment="Top" Click="SubmitButton_Click" Grid.Row="0" Margin="108,104,0,0" Background="#FF39BB53"/>
         <Label x:Name="idLabel" Grid.Column="1" Content="ID" HorizontalAlignment="Left" Margin="105,19,0,0" VerticalAlignment="Top" Grid.Row="0" RenderTransformOrigin="1.876,0.508"/>
         <TextBox x:Name="idTextBox" Grid.Column="1" HorizontalAlignment="Left" Margin="133,23,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Grid.Row="0"/>
+
+        <DataGrid x:Name="dataGrid" AutoGenerateColumns="True" Grid.Row="1" Grid.Column="1" />
+
     </Grid>
 </Window>
