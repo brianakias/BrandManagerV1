@@ -9,6 +9,7 @@ namespace BrandManagerV1
     {
         //public static string connectionString = "Server=localhost;Port=5432;Database=postgres;UserId=postgres;Password=password";
         public static string connectionString = "Server=localhost;Port=5432;Database=mydatabase;UserId=postgres;Password=L.a_#r_)asd";
+        // asdasdas
 
         public void CreateRecord(Brand brand)
         {
