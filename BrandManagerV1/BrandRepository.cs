@@ -1,6 +1,5 @@
 ﻿using Npgsql;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Data;
 using System.Windows.Controls;
 
@@ -8,9 +7,10 @@ namespace BrandManagerV1
 {
     public class BrandRepository : IDataAccess
     {
-        public static string connectionString = "Server=localhost;Port=5432;Database=postgres;UserId=postgres;Password=password;";
+        //public static string connectionString = "Server=localhost;Port=5432;Database=postgres;UserId=postgres;Password=password";
+        public static string connectionString = "Server=localhost;Port=5432;Database=mydatabase;UserId=postgres;Password=L.a_#r_)asd";
 
-        public void CreateRecord(string brandName, bool isEnabled)
+        public void CreateRecord(Brand brand)
         {
             using (var connection = new NpgsqlConnection(connectionString))
             {
@@ -20,8 +20,8 @@ namespace BrandManagerV1
                 {
                     command.Connection = connection;
                     command.CommandText = "INSERT INTO brands (name, is_enabled) VALUES (@name, @is_enabled)";
-                    command.Parameters.AddWithValue("@name", brandName);
-                    command.Parameters.AddWithValue("@is_enabled", isEnabled);
+                    command.Parameters.AddWithValue("@name", brand.Name);
+                    command.Parameters.AddWithValue("@is_enabled", brand.IsEnabled);
                     command.ExecuteNonQuery();
                 }
 
@@ -29,38 +29,7 @@ namespace BrandManagerV1
             }
         }
 
-        public List<Brand> ReadRecords()
-        {
-            var brands = new List<Brand>();
-
-            using (var connection = new NpgsqlConnection(connectionString))
-            {
-                connection.Open();
-
-                using (var command = new NpgsqlCommand())
-                {
-                    command.Connection = connection;
-                    command.CommandText = "SELECT * FROM brands WHERE is_enabled = true";
-
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            int id = reader.GetInt32(0);
-                            string brandName = reader.GetString(1);
-                            bool isEnabled = reader.GetBoolean(2);
-                            brands.Add(new Brand { Id = id, Name = brandName, IsEnabled = isEnabled });
-                        }
-                    }
-                }
-
-                connection.Close();
-            }
-
-            return brands;
-        }
-
-        public void ReadRecords2(DataGrid dataGrid)
+        public void ReadRecords(DataGrid dataGrid)
         {
             //var brands = new List<Brand>();
 
@@ -77,12 +46,11 @@ namespace BrandManagerV1
                         dataGrid.ItemsSource = table.DefaultView;
                     }
                 }
-
                 connection.Close();
             }
         }
 
-        public void UpdateRecord(int id, string brandName, bool isEnabled)
+        public void UpdateRecord(Brand brand)
         {
             using (var connection = new NpgsqlConnection(connectionString))
             {
@@ -92,9 +60,9 @@ namespace BrandManagerV1
                 {
                     command.Connection = connection;
                     command.CommandText = "UPDATE brands SET name = @name, is_enabled = @is_enabled WHERE id = @id";
-                    command.Parameters.AddWithValue("id", id);
-                    command.Parameters.AddWithValue("@name", brandName);
-                    command.Parameters.AddWithValue("@is_enabled", isEnabled);
+                    command.Parameters.AddWithValue("id", brand.Id);
+                    command.Parameters.AddWithValue("@name", brand.Name);
+                    command.Parameters.AddWithValue("@is_enabled", brand.IsEnabled);
                     command.ExecuteNonQuery();
                 }
 
@@ -102,7 +70,7 @@ namespace BrandManagerV1
             }
         }
 
-        public void DeleteRecord(int id)
+        public void DeleteRecord(Brand brand)
         {
             using (var connection = new NpgsqlConnection(connectionString))
             {
@@ -112,7 +80,7 @@ namespace BrandManagerV1
                 {
                     command.Connection = connection;
                     command.CommandText = "DELETE FROM brands WHERE id = @id";
-                    command.Parameters.AddWithValue("id", id);
+                    command.Parameters.AddWithValue("id", brand.Id);
                     command.ExecuteNonQuery();
                 }
 
@@ -122,7 +90,8 @@ namespace BrandManagerV1
 
         public void CreateTableIfNotExists(string tableName)
         {
-            string connectionString = "Server=localhost;Port=5432;Database=postgres;UserId=postgres;Password=password;";
+            //string connectionString = "Server=localhost;Port=5432;Database=postgres;UserId=postgres;Password=password;";
+            string connectionString = "Server=localhost;Port=5432;Database=mydatabase;UserId=postgres;Password=L.a_#r_)asd";
 
             using (var connection = new NpgsqlConnection(connectionString))
             {

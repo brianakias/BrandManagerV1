@@ -52,22 +52,8 @@ namespace BrandManagerV1
             brandNameTextBox.Background = Brushes.White;
             isEnabledBox.IsEnabled = true;
 
-
-            using (NpgsqlConnection connection = new NpgsqlConnection(BrandRepository.connectionString))
-            {
-                connection.Open();
-
-                using (NpgsqlCommand command = new NpgsqlCommand("SELECT * FROM brands", connection))
-                {
-                    using (NpgsqlDataReader reader = command.ExecuteReader())
-                    {
-                        DataTable table = new DataTable();
-                        table.Load(reader);
-                        dataGrid.ItemsSource = table.DefaultView;
-                    }
-                }
-            }
-
+            BrandRepository brandRepository = new BrandRepository();
+            brandRepository.ReadRecords(dataGrid);
         }
 
         /// <summary>
@@ -109,9 +95,6 @@ namespace BrandManagerV1
             isEnabledBox.IsEnabled = false;
 
         }
-
-
-
 
         /// <summary>
         /// Resets the border thickness of the 4 CRUD buttons.
@@ -215,23 +198,21 @@ namespace BrandManagerV1
             BrandRepository brandRepository = new BrandRepository();
             string brandName = brandNameTextBox.Text;
             bool isEnabled = (bool)isEnabledBox.IsChecked;
+            Brand brand = new Brand(brandName, isEnabled);
 
             if (inCreateState)
             {
-                brandRepository.CreateRecord(brandName, isEnabled);
-
+                brandRepository.CreateRecord(brand);
             }
             else if (inUpdateState)
             {
                 if (idTextBox.Text == "") return;
-                int id = int.Parse(idTextBox.Text);
-                brandRepository.UpdateRecord(id, brandName, isEnabled);
+                brandRepository.UpdateRecord(brand);
             }
             else if (inDeleteState)
             {
                 if (idTextBox.Text == "") return;
-                int id = int.Parse(idTextBox.Text);
-                brandRepository.DeleteRecord(id);
+                brandRepository.DeleteRecord(brand);
             }
         }
     }
