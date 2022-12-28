@@ -113,7 +113,7 @@
     </Compile>
     <Compile Include="Brand.cs" />
     <Compile Include="BrandRepository.cs" />
-    <Compile Include="IDataAccess.cs" />
+    <Compile Include="IBrandRepository.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

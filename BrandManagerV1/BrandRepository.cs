@@ -1,15 +1,12 @@
 ﻿using Npgsql;
 using System.Collections.Generic;
-using System.Data;
-using System.Windows.Controls;
 
 namespace BrandManagerV1
 {
     public class BrandRepository : IDataAccess
     {
-        //public static string connectionString = "Server=localhost;Port=5432;Database=postgres;UserId=postgres;Password=password";
-        public static string connectionString = "Server=localhost;Port=5432;Database=mydatabase;UserId=postgres;Password=L.a_#r_)asd";
-        // asdasdas
+        public static string connectionString = "Server=localhost;Port=5432;Database=postgres;UserId=postgres;Password=password";
+        //public static string connectionString = "Server=localhost;Port=5432;Database=mydatabase;UserId=postgres;Password=L.a_#r_)asd";
 
         public void CreateRecord(Brand brand)
         {
@@ -30,9 +27,9 @@ namespace BrandManagerV1
             }
         }
 
-        public void ReadRecords(DataGrid dataGrid)
+        public List<Brand> ReadRecords()
         {
-            //var brands = new List<Brand>();
+            List<Brand> brands = new List<Brand>();
 
             using (NpgsqlConnection connection = new NpgsqlConnection(connectionString))
             {
@@ -42,12 +39,18 @@ namespace BrandManagerV1
                 {
                     using (NpgsqlDataReader reader = command.ExecuteReader())
                     {
-                        DataTable table = new DataTable();
-                        table.Load(reader);
-                        dataGrid.ItemsSource = table.DefaultView;
+                        while (reader.Read())
+                        {
+                            Brand brand = new Brand();
+                            brand.Id = reader.GetInt32(0);
+                            brand.Name = reader.GetString(1);
+                            brand.IsEnabled = reader.GetBoolean(2);
+                            brands.Add(brand);
+                        }
                     }
                 }
                 connection.Close();
+                return brands;
             }
         }
 
@@ -71,7 +74,7 @@ namespace BrandManagerV1
             }
         }
 
-        public void DeleteRecord(Brand brand)
+        public void DeleteRecord(int id)
         {
             using (var connection = new NpgsqlConnection(connectionString))
             {
@@ -81,7 +84,7 @@ namespace BrandManagerV1
                 {
                     command.Connection = connection;
                     command.CommandText = "DELETE FROM brands WHERE id = @id";
-                    command.Parameters.AddWithValue("id", brand.Id);
+                    command.Parameters.AddWithValue("id", id);
                     command.ExecuteNonQuery();
                 }
 
@@ -91,8 +94,8 @@ namespace BrandManagerV1
 
         public void CreateTableIfNotExists(string tableName)
         {
-            //string connectionString = "Server=localhost;Port=5432;Database=postgres;UserId=postgres;Password=password;";
-            string connectionString = "Server=localhost;Port=5432;Database=mydatabase;UserId=postgres;Password=L.a_#r_)asd";
+            string connectionString = "Server=localhost;Port=5432;Database=postgres;UserId=postgres;Password=password;";
+            //string connectionString = "Server=localhost;Port=5432;Database=mydatabase;UserId=postgres;Password=L.a_#r_)asd";
 
             using (var connection = new NpgsqlConnection(connectionString))
             {

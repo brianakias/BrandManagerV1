@@ -1,13 +1,13 @@
-﻿using System.Windows.Controls;
+﻿using System.Collections.Generic;
 
 namespace BrandManagerV1
 {
     public interface IDataAccess
     {
         void CreateRecord(Brand brand);
-        void ReadRecords(DataGrid dataGrid);
+        List<Brand> ReadRecords();
         void UpdateRecord(Brand brand);
-        void DeleteRecord(Brand brand);
-
+        void DeleteRecord(int id);
+        void CreateTableIfNotExists(string tableName);
     }
 }

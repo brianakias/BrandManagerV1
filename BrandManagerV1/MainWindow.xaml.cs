@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
 
 namespace BrandManagerV1
@@ -53,7 +54,8 @@ namespace BrandManagerV1
             isEnabledBox.IsEnabled = true;
 
             BrandRepository brandRepository = new BrandRepository();
-            brandRepository.ReadRecords(dataGrid);
+            var brands = brandRepository.ReadRecords();
+            dataGrid.ItemsSource = brands;
         }
 
         /// <summary>
@@ -137,25 +139,6 @@ namespace BrandManagerV1
             }
         }
 
-        /// <summary>
-        /// Toggles the visibility of a ui element between collapsed/visible
-        /// </summary>
-        /// <param name="uiElement"></param>
-        //private void ToggleVisibility(Control uiElement)
-        //{
-        //    if (uiElement.Visibility == Visibility.Collapsed)
-        //    {
-        //        uiElement.Visibility = Visibility.Visible;
-        //    }
-        //    else
-        //    {
-        //        uiElement.Visibility = Visibility.Collapsed;
-        //    }
-        //}
-
-        /// <summary>
-        /// Hides all column 1 elements
-        /// </summary>
         private void HideAll()
         {
             List<Control> controls = new List<Control>
@@ -196,9 +179,11 @@ namespace BrandManagerV1
             bool inUpdateState = idTextBox.IsReadOnly == false && brandNameTextBox.IsReadOnly == false && isEnabledBox.IsEnabled == true;
             bool inDeleteState = idTextBox.IsReadOnly == false && brandNameTextBox.IsReadOnly == true && isEnabledBox.IsEnabled == false;
             BrandRepository brandRepository = new BrandRepository();
-            string brandName = brandNameTextBox.Text;
-            bool isEnabled = (bool)isEnabledBox.IsChecked;
-            Brand brand = new Brand(brandName, isEnabled);
+            Brand brand = new Brand()
+            {
+                Name = brandNameTextBox.Text,
+                IsEnabled = (bool)isEnabledBox.IsChecked,
+            };
 
             if (inCreateState)
             {
@@ -207,12 +192,14 @@ namespace BrandManagerV1
             else if (inUpdateState)
             {
                 if (idTextBox.Text == "") return;
+                brand.Id = int.Parse(idTextBox.Text);
                 brandRepository.UpdateRecord(brand);
             }
             else if (inDeleteState)
             {
                 if (idTextBox.Text == "") return;
-                brandRepository.DeleteRecord(brand);
+                int id = int.Parse(idTextBox.Text);
+                brandRepository.DeleteRecord(id);
             }
         }
     }
